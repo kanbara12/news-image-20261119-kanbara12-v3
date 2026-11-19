@@ -8,7 +8,8 @@ thirteen more as a numbered list beside a world map.
 
 What is different from the earlier v2 page, and why:
 - thirteen illustrations instead of twelve, all newly generated for this
-  build as three painterly strips (leads, smalls-A, smalls-B);
+  build as three painterly strips (leads, smalls-A, smalls-B), with the
+  Fed panel regenerated on its own so it does not repeat the Capitol;
 - taller hero pictures and a denser grid, so the page reads at thumbnail
   size;
 - the map is fixed: the GTA pin sits on New Zealand, the two Washington
@@ -131,6 +132,13 @@ SMALL_B_BOXES = [
     (SMALLS_B, 2834, 3505, 4, 700),
 ]
 
+# One panel was regenerated on its own: story 12 (the Fed) first came out
+# as a second white-columned building, too close to the Capitol in story
+# 6, so it was replaced with a trading floor under rising charts.
+STANDALONE = {
+    12: "media-generation-panel-12-fed-0-d190b146-fea9-4361-ba7b-9bcaafae9d6d.png",
+}
+
 _PANEL_CACHE = {}
 
 
@@ -138,6 +146,10 @@ def panel_for(number):
     """Return the generated illustration for story `number` (1-13)."""
     if number in _PANEL_CACHE:
         return _PANEL_CACHE[number]
+    if number in STANDALONE:
+        panel = Image.open(ASSETS / STANDALONE[number]).convert("RGB")
+        _PANEL_CACHE[number] = panel
+        return panel
     if number <= 3:
         fname, x0, x1, y0, y1 = LEAD_BOXES[number - 1]
     elif number <= 8:
@@ -247,8 +259,7 @@ MEDIUMS_ROW1 = [
 MEDIUMS_ROW2 = [
     (9, "Asia", "9 \u00b7 ASIA \u00b7 WEATHER",
      "Cyclone Akvan bears down on India's east coast",
-     "Very severe storm forecast to cross Andhra Pradesh on Friday; "
-     "winds 120\u2013130 km/h.",
+     "Landfall Friday in Andhra Pradesh; winds 120\u2013130 km/h.",
      "BAY OF BENGAL \u2014 LANDFALL FRIDAY"),
     (10, "Middle East", "10 \u00b7 MIDDLE EAST \u00b7 GAZA",
      "Gaza's winter shelters fail in the rain",
@@ -311,7 +322,7 @@ PINS = {
     5: (-122, 37, 0, 0),     # Santa Clara
     6: (-77, 39, -18, -14),  # Washington (Jeffries): badge up-left
     7: (-150, -35, 0, 0),    # World survey: South Pacific, ocean badge
-    8: (155, 68, 0, 0),      # Deep space: Arctic Ocean, star badge
+    8: (-165, 40, 0, 0),    # Deep space: North Pacific, ocean badge
     9: (88, 16, 0, 0),       # Bay of Bengal
     10: (34, 32, -16, -10),  # Gaza: badge up-left, clear of the Gulf
     11: (44, 11, 0, 0),      # Bab el-Mandeb
@@ -417,7 +428,7 @@ def render():
     draw.line([(MARGIN, ay + 18), (W - MARGIN, ay + 18)], fill=INK, width=1)
 
     # --- world map, with leader-line badges so nothing piles up ---
-    map_x, map_y, map_w, map_h = MARGIN, ay + 26, 340, 200
+    map_x, map_y, map_w, map_h = MARGIN, ay + 26, 340, 208
     draw.rectangle([map_x, map_y, map_x + map_w, map_y + map_h],
                    fill=SKY_LIGHT, outline=LAND_LINE)
 
@@ -466,11 +477,11 @@ def render():
             ly = y
             for line in lines[:2]:
                 draw.text((x + 24, ly), line, font=txt_font, fill=INK)
-                ly += 12
-            y = ly + 4
+                ly += 13
+            y = ly + 6
 
     # --- footer ---
-    foot_y = 972
+    foot_y = 976
     draw.text((MARGIN, foot_y),
               "DATE CHECK \u2014 Left out as earlier news: Estonia's border closure, announced 16 Nov; "
               "the NSA network outage, first reported 17 Nov.",

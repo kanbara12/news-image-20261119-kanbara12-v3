@@ -16,7 +16,7 @@ The output is `out/entry.png`, the same 1024 by 1024 front page.
 
 ## How it works
 
-render.py draws entry.png at 1024 by 1024. It slices thirteen illustrations out of three painterly strips made for this entry (assets/), one per illustrated story, crops each to its panel, and adds a caption bar naming the place. The map is drawn from a short list of continent outlines, with offset badges and leader lines for the crowded places. main.py only copies that image to the output directory, so the entry runs on the standard library alone and writes the same bytes every time.
+render.py draws entry.png at 1024 by 1024. It slices thirteen illustrations out of three painterly strips made for this entry (assets/), one per illustrated story — the Fed panel was regenerated on its own so it does not repeat the Capitol — crops each to its panel, and adds a caption bar naming the place. The map is drawn from a short list of continent outlines, with offset badges and leader lines for the crowded places. main.py only copies that image to the output directory, so the entry runs on the standard library alone and writes the same bytes every time.
 
 ---
 
