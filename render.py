@@ -3,16 +3,17 @@
 
 One newspaper front page for Thursday 19 November 2026: 26 stories from
 seven regions. Three lead stories, ten more illustrated stories (one of
-them Scotland's World Cup qualification, promoted from the briefs), and
+them the senators' AI-cyber warning, promoted from the briefs), and
 thirteen more as a numbered list beside a world map.
 
 What is different from the earlier v2 page, and why:
 - thirteen illustrations instead of twelve, all newly generated for this
   build as three painterly strips (leads, smalls-A, smalls-B), with the
-  Fed panel regenerated on its own so it does not repeat the Capitol;
+  Fed panel regenerated on its own so it does not repeat the Capitol
+  and the AI-cyber panel drawn on its own;
 - taller hero pictures and a denser grid, so the page reads at thumbnail
   size;
-- the map is fixed: the GTA pin sits on New Zealand, the two Washington
+- the map is fixed: the GTA pin sits on New Zealand, the three Washington
   stories get offset badges with leader lines instead of one pile, the
   Europe and Gulf clusters are spread the same way, and the two stories
   that have no place on land (a world survey, a deep-space probe) are
@@ -132,11 +133,14 @@ SMALL_B_BOXES = [
     (SMALLS_B, 2834, 3505, 4, 700),
 ]
 
-# One panel was regenerated on its own: story 12 (the Fed) first came out
+# Two panels were drawn on their own: story 12 (the Fed) first came out
 # as a second white-columned building, too close to the Capitol in story
-# 6, so it was replaced with a trading floor under rising charts.
+# 6, so it was replaced with a trading floor under rising charts; story
+# 13 (the AI-cyber warning) was drawn on its own so the grid's Scotland
+# panel, which showed a match from 18 November 2025, is never used.
 STANDALONE = {
     12: "media-generation-panel-12-fed-0-d190b146-fea9-4361-ba7b-9bcaafae9d6d.png",
+    13: "media-generation-panel-13-cyber-0-65005d7a-3276-46d0-ab49-de16824f1098.png",
 }
 
 _PANEL_CACHE = {}
@@ -265,7 +269,7 @@ MEDIUMS_ROW2 = [
      "Gaza's winter shelters fail in the rain",
      "UN says tens of thousands of shelters were damaged by the first "
      "winter rains.",
-     "GAZA \u2014 46,000 HOMES FLOODED"),
+     "GAZA \u2014 46,000 HOUSEHOLDS HIT"),
     (11, "Middle East", "11 \u00b7 MIDDLE EAST \u00b7 YEMEN",
      "Houthis close on Aden as army pulls back",
      "Sources say fighters are about 60 km from the city after "
@@ -276,17 +280,17 @@ MEDIUMS_ROW2 = [
      "Most officials expect further hikes if inflation and jobs stay "
      "hot, minutes show.",
      "WASHINGTON \u2014 RATES STILL RISING"),
-    (13, "Europe", "13 \u00b7 EUROPE \u00b7 SPORT",
-     "Scotland beat Denmark 4\u20132 to reach World Cup",
-     "The 4\u20132 win at Hampden ends a 28-year wait for the World Cup "
-     "finals.",
-     "HAMPDEN \u2014 4\u20132, WORLD CUP SEALED"),
+    (13, "Americas", "13 \u00b7 US \u00b7 CYBERSECURITY",
+     "Senators warn AI cyber threats outpacing defences",
+     "Cantwell and Rounds urge the White House to act as AI attacks "
+     "outpace defences.",
+     "WASHINGTON \u2014 DEFENCES LAGGING"),
 ]
 
 ALSO_ON = [
     (14, "Zelensky urges the US to lift Starshield limits, saying they hinder drone defence."),
     (15, "Canada adjusts China ties; Carney seeks the right deal with the US."),
-    (16, "US senators warn AI cyber threats are outpacing defences."),
+    (16, "Scotland edge Australia 15\u201312 in rugby's Nations Championship."),
     (17, "France: justice minister says M\u00e9lenchon could win the presidency."),
     (18, "Saudi Arabia says the danger has passed in three southern cities."),
     (19, "Libya seizes cocaine and millions of pills in the east, officials say."),
@@ -327,17 +331,17 @@ PINS = {
     10: (34, 32, -16, -10),  # Gaza: badge up-left, clear of the Gulf
     11: (44, 11, 0, 0),      # Bab el-Mandeb
     12: (-79, 36, 18, 14),   # Washington (Fed): badge down-right
-    13: (-4, 56, 2, -16),    # Scotland: badge straight up
+    13: (-74, 39, 14, -14),  # Washington (AI cyber): dot off the coast, badge up-right
 }
 
 PIN_REGION = {1: "Oceania", 2: "Asia", 3: "Middle East", 4: "Europe",
               5: "Americas", 6: "Americas", 7: "World", 8: "World",
               9: "Asia", 10: "Middle East", 11: "Middle East",
-              12: "Americas", 13: "Europe"}
+              12: "Americas", 13: "Americas"}
 
 # Small grey dots for the also-on stories (lon/lat).
 DOTS = {
-    14: (30, 50), 15: (-75, 45), 16: (-77, 39), 17: (2, 49),
+    14: (30, 50), 15: (-75, 45), 16: (-4, 58), 17: (2, 49),
     18: (47, 25), 19: (20, 32), 20: (77, 29), 21: (140, 36),
     22: (0, 51), 23: (30, 50), 24: (56, 27), 25: (34, 31), 26: (45, 2),
 }
@@ -415,7 +419,7 @@ def render():
         story_block(img, draw, MARGIN + i * (row1_w + row1_gap), row1_y,
                     row1_w, 86, story, (4, 9, 13, 13, 15, 10, 43, 12, 17, 9))
 
-    # --- mediums row 2: 5 columns (stories 9-13, Scotland last) ---
+    # --- mediums row 2: 5 columns (stories 9-13, AI-cyber warning last) ---
     row2_y, row2_w, row2_gap = 543, 191, 10
     for i, story in enumerate(MEDIUMS_ROW2):
         story_block(img, draw, MARGIN + i * (row2_w + row2_gap), row2_y,
@@ -487,7 +491,7 @@ def render():
               "the NSA network outage, first reported 17 Nov.",
               font=font(SANS_B, 9), fill=INK)
     draw.text((MARGIN, foot_y + 13),
-              "Every story here happened or was first reported on Thursday 19 November 2026. "
+              "Every story here was current news on Thursday 19 November 2026. "
               "Contested claims are marked as claims. Sources: Reuters, AP, AFP, BBC, Pew, NASA, IMD. Original drawings.",
               font=font(SANS, 9), fill=GREY)
 
