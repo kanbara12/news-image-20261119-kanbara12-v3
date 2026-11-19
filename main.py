@@ -1,26 +1,37 @@
-#!/usr/bin/env python3
-"""Entry point for news-image-20261119 v3 (@kanbara12).
+"""Run the v3 front-page renderer and hand the PNG to the harness.
 
-The front page is painted ahead of time by render.py, which composites
-thirteen illustrations generated fresh for this build into the 1024x1024
-newspaper page and writes entry.png. All this program does is copy that
-finished image into the output directory, so it needs nothing but the
-standard library and writes the same bytes on every run.
+The page itself is drawn by render.py, which sits beside this file and
+writes entry.png next to itself. All this entrypoint does is run that
+renderer, then move the finished file into the directory the harness
+names through MAKEFUN_OUTPUT_DIR (falling back to /output), using only
+the standard library and no network at all. A second run writes the
+same bytes, so the result is reproducible by construction.
 """
 
-import os
-import shutil
-from pathlib import Path
+import os, runpy
+from pathlib import Path as _Path
 
-ROOT = Path(__file__).resolve().parent
-
-
-def main():
-    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(ROOT / "entry.png", out_dir / "entry.png")
-    return 0
+HERE = _Path(__file__).resolve().parent
+DEST_DIR = _Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output")
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+def _render_page() -> _Path:
+    """Execute render.py as __main__ so it draws entry.png in HERE."""
+    runpy.run_path(str(HERE / "render.py"), run_name="__main__")
+    return HERE / "entry.png"
+
+
+def _place(finished: _Path) -> _Path:
+    """Copy the finished PNG into DEST_DIR and hand back its new path."""
+    DEST_DIR.mkdir(parents=True, exist_ok=True)
+    target = DEST_DIR / finished.name
+    target.write_bytes(finished.read_bytes())
+    return target
+
+
+def main() -> None:
+    placed = _place(_render_page())
+    print(f"entry ready: {placed} ({placed.stat().st_size} bytes)")
+
+
+main()
