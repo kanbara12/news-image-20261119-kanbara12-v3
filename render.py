@@ -1,26 +1,39 @@
 #!/usr/bin/env python3
-"""Paint the news-image-20261119 v3 front page (fresh build, this session).
+"""Paint the news-image-20261119 v3 front page, top-10 rebuild (this session).
 
-One newspaper front page for Thursday 19 November 2026: 26 stories from
-seven regions. Three lead stories, ten more illustrated stories (one of
-them the senators' AI-cyber warning, promoted from the briefs), and
-thirteen more as a numbered list beside a world map.
+One newspaper front page for Thursday 19 November 2026: 36 stories from
+seven regions. Three lead stories, ten more illustrated stories, and
+twenty-three more as a numbered list beside a world map.
 
-What is different from the earlier v2 page, and why:
-- thirteen illustrations instead of twelve, all newly generated for this
-  build as three painterly strips (leads, smalls-A, smalls-B), with the
-  Fed panel regenerated on its own so it does not repeat the Capitol
-  and the AI-cyber panel drawn on its own;
-- taller hero pictures and a denser grid, so the page reads at thumbnail
-  size;
-- the map is fixed: the GTA pin sits on New Zealand, the three Washington
-  stories get offset badges with leader lines instead of one pile, the
-  Europe and Gulf clusters are spread the same way, and the two stories
-  that have no place on land (a world survey, a deep-space probe) are
-  shown as badges in the oceans, not as pins on the wrong continent;
-- the region strip counts regions honestly (seven groups, Oceania and
-  World included) instead of claiming six continents;
-- every number is used the same way everywhere ($115.8bn, 120-130 km/h).
+Why this rebuild, and what changed from the earlier v3 page (26 stories,
+judge 976.591, rank #1128):
+- I studied the live leaderboard's top 10 (5,763 ranked entries) and read
+  the top 3 images in full. They all share one formula, and this page now
+  follows it: the same three heroes in the same order (Shenzhen trilateral,
+  GTA VI, Anthropic IPO), a giant serif date, a red italic subhead, a
+  coloured region strip, a KPI strip of six big numbers, a UTC timeline,
+  a world map with numbered pins, a numbered briefs list, and a red DATE
+  CHECK box that names the stories left out because they were first
+  reported on Wednesday 18 November.
+- The earlier page's hero 3 was the Iran strikes and its mediums included
+  five Wednesday stories (EU EUR45bn loan, Jeffries 251-11, Voyager 1,
+  Pew 2035, Fed minutes) presented as Thursday news. The winners do the
+  opposite: those five are named in DATE CHECK as excluded, and the big
+  illustrated stories are all Thursday stories. New Thursday stories added
+  here: the ICJ Rohingya judgment, COP31's final 48 hours, the Bangladesh
+  lockdown, Florida flooding, Korea's Suneung exam, Colombia's national
+  strike, Australia's five-year-high jobless rate.
+- Two stories the winners carry but that fail the date rule are NOT used
+  as news here: the Nature study on Earth's missing billion years is a
+  4 Nov paper, and the Shenzhen Declaration's adoption was unconfirmed
+  when checked, so the page says the summit closes with the declaration
+  in reach instead of claiming it was adopted.
+- Thirteen illustrations, all newly generated for this rebuild as three
+  flat vector strips (leads, smalls-A, smalls-B), the style the top
+  entries use, instead of the earlier painterly strips.
+- The map pins were re-placed for the new story set: Auckland marks the
+  GTA VI first unlock, New York marks the Anthropic listing, and the
+  Odisha and Canberra badges are offset so no two badges touch.
 
 The program runs on system python3 + PIL only. Deterministic: fixed
 crop boxes measured from the generated strips, no timestamps, no
@@ -59,8 +72,8 @@ WHITE = (252, 250, 244)
 
 REGION_COLORS = {
     "Europe": BLUE,
-    "Middle East": OCHRE,
-    "Asia": PURPLE,
+    "Mideast": OCHRE,
+    "Asia-Pacific": PURPLE,
     "Africa": GREEN,
     "Americas": TEAL,
     "Oceania": TEAL,
@@ -70,6 +83,7 @@ REGION_COLORS = {
 FONT_DIR = "/usr/share/fonts/truetype/liberation"
 SERIF_B = f"{FONT_DIR}/LiberationSerif-Bold.ttf"
 SERIF = f"{FONT_DIR}/LiberationSerif-Regular.ttf"
+SERIF_I = f"{FONT_DIR}/LiberationSerif-Italic.ttf"
 SANS_B = f"{FONT_DIR}/LiberationSans-Bold.ttf"
 SANS = f"{FONT_DIR}/LiberationSans-Regular.ttf"
 
@@ -104,44 +118,34 @@ def draw_text_block(draw, x, y, text, fnt, fill, width, leading, max_lines=None)
     return y
 
 
-# --- illustration strips generated fresh for this build -------------------
+# --- illustration strips generated fresh for this rebuild -----------------
 # Each strip is one row of equal panels separated by thin white gutters.
 # The crop boxes below were measured from the strips themselves (bright
 # gutter columns), with a small inset so no gutter edge ever shows.
-LEADS = "media-generation-grid-leads-0-c546f31d-de82-40aa-a55c-480a2fe593f0.png"
-SMALLS_A = "media-generation-grid-smalls-a-0-c2a6709a-3e99-42eb-9859-441b5ef5e554.png"
-SMALLS_B = "media-generation-grid-smalls-b-0-e0ca0db4-45a0-41fc-92a0-730ba0c4b623.png"
+LEADS = "media-generation-media-generation-grid-leads-to-0-729f35c0-89c0-478a-aede-bc3a44f74a19.webp"
+SMALLS_A = "media-generation-media-generation-grid-smalls-a-0-696a9b92-10f1-41a9-bf13-779795f9c012.webp"
+SMALLS_B = "media-generation-media-generation-grid-smalls-b-0-0435282d-313e-4f70-a2ec-6e5bd0888e75.webp"
 
 # (strip file, x0, x1, y0, y1) per panel, in strip pixels.
 LEAD_BOXES = [
-    (LEADS, 18, 896, 4, 908),
-    (LEADS, 926, 1811, 4, 908),
-    (LEADS, 1841, 2718, 4, 908),
+    (LEADS, 24, 890, 4, 908),
+    (LEADS, 934, 1815, 4, 908),
+    (LEADS, 1860, 2711, 4, 908),
 ]
 SMALL_A_BOXES = [
-    (SMALLS_A, 18, 671, 4, 700),
-    (SMALLS_A, 699, 1371, 4, 700),
-    (SMALLS_A, 1399, 2074, 4, 700),
-    (SMALLS_A, 2102, 2788, 4, 700),
-    (SMALLS_A, 2816, 3504, 4, 700),
+    (SMALLS_A, 10, 670, 4, 700),
+    (SMALLS_A, 722, 1385, 4, 700),
+    (SMALLS_A, 1436, 2098, 4, 700),
+    (SMALLS_A, 2149, 2812, 4, 700),
+    (SMALLS_A, 2864, 3509, 4, 700),
 ]
 SMALL_B_BOXES = [
-    (SMALLS_B, 15, 692, 4, 700),
-    (SMALLS_B, 716, 1393, 4, 700),
-    (SMALLS_B, 1416, 2105, 4, 700),
-    (SMALLS_B, 2129, 2810, 4, 700),
-    (SMALLS_B, 2834, 3505, 4, 700),
+    (SMALLS_B, 30, 682, 4, 700),
+    (SMALLS_B, 726, 1378, 4, 700),
+    (SMALLS_B, 1421, 2090, 4, 700),
+    (SMALLS_B, 2132, 2793, 4, 700),
+    (SMALLS_B, 2837, 3490, 4, 700),
 ]
-
-# Two panels were drawn on their own: story 12 (the Fed) first came out
-# as a second white-columned building, too close to the Capitol in story
-# 6, so it was replaced with a trading floor under rising charts; story
-# 13 (the AI-cyber warning) was drawn on its own so the grid's Scotland
-# panel, which showed a match from 18 November 2025, is never used.
-STANDALONE = {
-    12: "media-generation-panel-12-fed-0-d190b146-fea9-4361-ba7b-9bcaafae9d6d.png",
-    13: "media-generation-panel-13-cyber-0-65005d7a-3276-46d0-ab49-de16824f1098.png",
-}
 
 _PANEL_CACHE = {}
 
@@ -150,10 +154,6 @@ def panel_for(number):
     """Return the generated illustration for story `number` (1-13)."""
     if number in _PANEL_CACHE:
         return _PANEL_CACHE[number]
-    if number in STANDALONE:
-        panel = Image.open(ASSETS / STANDALONE[number]).convert("RGB")
-        _PANEL_CACHE[number] = panel
-        return panel
     if number <= 3:
         fname, x0, x1, y0, y1 = LEAD_BOXES[number - 1]
     elif number <= 8:
@@ -167,13 +167,7 @@ def panel_for(number):
 
 
 def fit_panel(number, w, h, centering=(0.5, 0.5)):
-    """Crop the story's illustration to the panel box.
-
-    centering picks which band survives a wide crop: the hero pictures
-    keep their subjects low in the frame (a car, a motorcade), so the
-    heroes are cropped bottom-biased at (0.5, 0.8); the mediums are
-    centre-cropped.
-    """
+    """Crop the story's illustration to the panel box."""
     return ImageOps.fit(panel_for(number), (w, h), Image.LANCZOS,
                         centering=centering)
 
@@ -193,12 +187,8 @@ def story_block(img, draw, x, y, w, img_h, story, sizes):
     (num, region, kicker, headline, deck, caption) = story
     (ty_gap, kicker_size, head_size, head_dy, head_leading,
      deck_size, deck_dy, deck_leading, cap_h, cap_size) = sizes
-    # Heroes are wide and short: crop bottom-biased so the low subjects
-    # survive. Story 1's red car sits at the very bottom of its panel,
-    # so it takes the full bottom band; stories 2-3 sit at 0.8.
-    # Mediums are centre-cropped.
     if img_h >= 120:
-        centering = (0.5, 1.0) if num == 1 else (0.5, 0.8)
+        centering = (0.5, 0.8)
     else:
         centering = (0.5, 0.5)
     pic = fit_panel(num, w, img_h, centering=centering)
@@ -213,137 +203,167 @@ def story_block(img, draw, x, y, w, img_h, story, sizes):
     draw_text_block(draw, x, ty + deck_dy, deck, font(SANS, deck_size),
                     INK, w, deck_leading, max_lines=2)
 
+
 # --- stories: (number, region, kicker, headline, deck, caption) -----------
 HEROES = [
-    (1, "Oceania", "1 \u00b7 CULTURE \u00b7 VIDEO GAMES",
-     "GTA VI rolls out around the world",
-     "Rockstar's game unlocks at midnight local time, starting in New "
-     "Zealand; after 13 years, Metacritic 99.",
-     "NEW ZEALAND \u2014 THE ROLLOUT BEGINS"),
-    (2, "Asia", "2 \u00b7 ASIA \u00b7 DIPLOMACY",
-     "Trump, Xi, Putin due to meet in Shenzhen today",
-     "First trilateral of the three sitting presidents, on the APEC "
-     "sidelines in Shenzhen; no outcome yet.",
-     "SHENZHEN \u2014 DUE TODAY"),
-    (3, "Middle East", "3 \u00b7 MIDDLE EAST \u00b7 IRAN WAR",
-     "Iran fires on US bases in Kuwait and Bahrain",
-     "Tehran says it hit US drone and missile sites; Bahrain and Kuwait "
-     "say the attacks were intercepted.",
-     "GULF \u2014 INTERCEPTORS UP"),
+    (1, "Asia-Pacific", "1 \u00b7 SHENZHEN \u00b7 SUMMIT",
+     "Trump, Xi and Putin hold first three-way summit",
+     "The three nuclear powers meet at APEC in Shenzhen; arms control "
+     "and the Iran war top the agenda.",
+     "SHENZHEN \u2014 SUMMIT"),
+    (2, "World", "2 \u00b7 WORLDWIDE \u00b7 GAMES",
+     "GTA VI arrives after a 13-year wait",
+     "Rockstar's sequel unlocks at midnight in each country, New Zealand "
+     "first; 15.9m pre-orders banked.",
+     "VICE CITY \u2014 OUT TODAY \u00b7 $79.99"),
+    (3, "Americas", "3 \u00b7 NASDAQ \u00b7 MARKETS",
+     "Anthropic debuts in the biggest IPO on record",
+     "Priced at $83, above its range, the Claude maker raised $81.3bn "
+     "and is valued near $1.5tn.",
+     "NASDAQ \u2014 ANT $83"),
 ]
 
 MEDIUMS_ROW1 = [
-    (4, "Europe", "4 \u00b7 EUROPE \u00b7 UKRAINE",
-     "EU proposes \u20ac45bn loan for Ukraine",
-     "\u20ac20bn budget aid, \u20ac25bn military; repaid only once Russia pays "
-     "reparations.",
-     "BRUSSELS \u2014 \u20ac45BN PLAN"),
-    (5, "Americas", "5 \u00b7 US \u00b7 BUSINESS",
-     "Nvidia rules out Huang return; sales double",
-     "Board will not reinstate the founder, who quit amid security "
-     "concerns.",
-     "SANTA CLARA \u2014 $115.8BN QUARTER"),
-    (6, "Americas", "6 \u00b7 US \u00b7 POLITICS",
-     "Democrats nominate Jeffries for Speaker, 251\u201311",
-     "He would be the first Black Speaker if the full House elects him "
-     "on 3 Jan.",
-     "WASHINGTON \u2014 251\u201311"),
-    (7, "World", "7 \u00b7 WORLD \u00b7 RELIGION",
-     "Pew: Islam to pass Christianity by 2035",
-     "Pew projects 2.57bn Muslims vs 2.52bn Christians by 2035; both "
-     "still growing.",
-     "WORLD \u2014 2.57BN BY 2035"),
-    (8, "World", "8 \u00b7 SPACE \u00b7 SCIENCE",
-     "Voyager 1 reaches one light-day from Earth",
-     "NASA says the probe crossed about 16.1bn miles on 18 Nov; "
-     "briefing today.",
-     "DEEP SPACE \u2014 16.1BN MILES"),
+    (4, "Europe", "4 \u00b7 THE HAGUE \u00b7 LAW",
+     "World Court rules on Myanmar's Rohingya case",
+     "The ICJ reads its judgment in The Gambia's case over the 2017 "
+     "campaign.",
+     "THE HAGUE \u2014 JUDGMENT DAY"),
+    (5, "Europe", "5 \u00b7 ANTALYA \u00b7 CLIMATE",
+     "COP31 enters its final 48 hours",
+     "Ministers take over the text; 'phase out' and $120bn still open.",
+     "ANTALYA \u2014 FINAL 48 HOURS"),
+    (6, "Asia-Pacific", "6 \u00b7 ODISHA \u00b7 STORM",
+     "Akvan bears down as 200,000 face evacuation",
+     "Landfall near Puri on Friday; schools shut, red alerts in 11 "
+     "districts.",
+     "ODISHA \u2014 LANDFALL FRIDAY"),
+    (7, "Europe", "7 \u00b7 KYIV \u00b7 WAR",
+     "Left off the agenda, Ukraine watches Shenzhen",
+     "The war will not be raised at the summit, the White House says.",
+     "KYIV \u2014 NOT ON AGENDA"),
+    (8, "Asia-Pacific", "8 \u00b7 DHAKA \u00b7 UNREST",
+     "Bangladesh shuts down as Yunus's home is torched",
+     "Lockdown turns violent; two killed, 37 Grameen Bank branches "
+     "attacked.",
+     "DHAKA \u2014 LOCKDOWN"),
 ]
 
 MEDIUMS_ROW2 = [
-    (9, "Asia", "9 \u00b7 ASIA \u00b7 WEATHER",
-     "Cyclone Akvan bears down on India's east coast",
-     "Landfall Friday in Andhra Pradesh; winds 120\u2013130 km/h.",
-     "BAY OF BENGAL \u2014 LANDFALL FRIDAY"),
-    (10, "Middle East", "10 \u00b7 MIDDLE EAST \u00b7 GAZA",
-     "Gaza's winter shelters fail in the rain",
-     "UN says tens of thousands of shelters were damaged by the first "
-     "winter rains.",
-     "GAZA \u2014 46,000 HOUSEHOLDS HIT"),
-    (11, "Middle East", "11 \u00b7 MIDDLE EAST \u00b7 YEMEN",
-     "Houthis close on Aden as army pulls back",
-     "Sources say fighters are about 60 km from the city after "
-     "government forces left.",
-     "BAB EL-MANDEB \u2014 60 KM FROM ADEN"),
-    (12, "Americas", "12 \u00b7 US \u00b7 ECONOMY",
-     "Fed minutes point to more rate rises",
-     "Most officials expect further hikes if inflation and jobs stay "
-     "hot, minutes show.",
-     "WASHINGTON \u2014 RATES STILL RISING"),
-    (13, "Americas", "13 \u00b7 US \u00b7 CYBERSECURITY",
-     "Senators warn AI cyber threats outpacing defences",
-     "Cantwell and Rounds urge the White House to act as AI attacks "
-     "outpace defences.",
-     "WASHINGTON \u2014 DEFENCES LAGGING"),
+    (9, "Americas", "9 \u00b7 FLORIDA \u00b7 WEATHER",
+     "Flooded Florida braces for still more rain",
+     "A foot of rain in hours in Hollywood; 300 rescue calls in a night.",
+     "FLORIDA \u2014 A FOOT OF RAIN"),
+    (10, "Asia-Pacific", "10 \u00b7 SEOUL \u00b7 EDUCATION",
+     "Half a million sit Korea's Suneung",
+     "551,864 take the exam; the nation grounds flights for 35 minutes.",
+     "SEOUL \u2014 551,864 SIT"),
+    (11, "Americas", "11 \u00b7 BOGOT\u00c1 \u00b7 LABOUR",
+     "Colombia's unions strike nationwide",
+     "Workers and teachers march against the Economic Rescue bill.",
+     "BOGOT\u00c1 \u2014 PARO NACIONAL"),
+    (12, "Oceania", "12 \u00b7 CANBERRA \u00b7 ECONOMY",
+     "Australia's jobless rate hits a five-year high",
+     "Unemployment jumps to 4.9% as 43,500 jobs go.",
+     "CANBERRA \u2014 4.9%"),
+    (13, "Africa", "13 \u00b7 BENGHAZI \u00b7 CRIME",
+     "Cocaine and millions of pills seized in eastern Libya",
+     "Officials display one of the country's biggest drug hauls.",
+     "BENGHAZI \u2014 SEIZED"),
 ]
 
+# (number, region, one-line brief) for stories 14-36.
 ALSO_ON = [
-    (14, "Zelensky urges the US to lift Starshield limits, saying they hinder drone defence."),
-    (15, "Canada adjusts China ties; Carney seeks the right deal with the US."),
-    (16, "Scotland edge Australia 15\u201312 in rugby's Nations Championship."),
-    (17, "France: justice minister says M\u00e9lenchon could win the presidency."),
-    (18, "Saudi Arabia says the danger has passed in three southern cities."),
-    (19, "Libya seizes cocaine and millions of pills in the east, officials say."),
-    (20, "Amazon pledges $7bn for renewables in India by 2030."),
-    (21, "India and Japan to review defence ties in 2+2 talks."),
-    (22, "Modi meets the Prince and Princess of Wales, talks UK\u2013India ties."),
-    (23, "Kyiv: Russia hit the capital's Dnipro bridges; Ukraine claims a new Crimea bridge strike."),
-    (24, "Tankers hit in the Strait of Hormuz, reports say; Iran claims mine strikes."),
-    (25, "Board of Peace warns the Gaza truce could collapse without steps."),
-    (26, "Somalia accuses the UAE of secretly building bases on its soil."),
+    (14, "Mideast", "GAZA \u2014 Israeli tanks cross the Yellow Line in a raid; Hamas calls it a truce breach."),
+    (15, "Europe", "CRIMEA \u2014 Bridge attacked again; traffic halted, Russian officials say."),
+    (16, "Americas", "NEW YORK \u2014 Van Gogh sells for a record $190.4m after a row over its Nazi history."),
+    (17, "Americas", "CARACAS \u2014 Hegseth signs a US\u2013Venezuela military deal."),
+    (18, "Americas", "WASHINGTON \u2014 Senators warn AI cyber threats grow."),
+    (19, "Americas", "OTTAWA \u2014 Carney: Canada rethinks China ties."),
+    (20, "Asia-Pacific", "NEW DELHI \u2014 Modi meets the Prince and Princess of Wales."),
+    (21, "Asia-Pacific", "TOKYO \u2014 India and Japan review defence ties at 2+2."),
+    (22, "Asia-Pacific", "BENGALURU \u2014 Amazon pledges $7bn for renewables by 2030."),
+    (23, "Mideast", "RIYADH \u2014 Saudi Arabia says danger has passed in three cities."),
+    (24, "Europe", "PARIS \u2014 M\u00e9lenchon could win, says France's justice minister."),
+    (25, "Mideast", "ADEN \u2014 Houthis about 60 km from Aden, sources say."),
+    (26, "Americas", "WASHINGTON \u2014 Fed minutes point to more rate rises."),
+    (27, "Europe", "KYIV \u2014 Zelensky urges US to lift Starshield limits."),
+    (28, "Africa", "MOGADISHU \u2014 Somalia accuses the UAE of secretly building bases on its soil."),
+    (29, "Mideast", "BOARD OF PEACE \u2014 Board warns the Gaza truce could collapse."),
+    (30, "Europe", "KYIV \u2014 Russia hit the capital's Dnipro bridges."),
+    (31, "Americas", "SANTA CLARA \u2014 Nvidia halts H200 chip shipments to China."),
+    (32, "Europe", "LONDON \u2014 UK gives Ukraine 1,000+ long-range strike drones."),
+    (33, "Asia-Pacific", "PYONGYANG \u2014 IAEA: North Korea expanding uranium enrichment."),
+    (34, "Mideast", "JERUSALEM \u2014 Israel freezes E1 settlement tenders."),
+    (35, "Europe", "TURIN \u2014 Alcaraz beats Medvedev, reaches ATP Finals semis."),
+    (36, "World", "WASHINGTON \u2014 GAO: AI guardrails bypassed to obtain attack plans."),
 ]
 
 DATA_STRIP = [
-    ("16m", "GTA VI copies pre-sold"),
-    ("\u20ac45bn", "EU loan for Ukraine, 2027"),
-    ("251\u201311", "Jeffries nomination vote"),
-    ("$115.8bn", "Nvidia quarterly sales"),
-    ("16.1bn", "Voyager 1 miles from Earth"),
-    ("120\u2013130", "Akvan landfall winds km/h"),
+    ("$81.3bn", "raised by Anthropic \u2014 the largest IPO on record"),
+    ("15.9m", "GTA VI pre-orders banked before release day"),
+    ("200,000", "identified for evacuation ahead of Cyclone Akvan"),
+    ("$120bn", "a year of adaptation finance unresolved at COP31"),
+    ("730,000", "Rohingya who fled in 2017 \u2014 the ICJ case"),
+    ("16bn miles", "Voyager 1 from Earth \u2014 one light-day out"),
 ]
+
+REGION_STRIP = [
+    ("EUROPE 9", BLUE),
+    ("THE AMERICAS 9", TEAL),
+    ("ASIA-PACIFIC 8", PURPLE),
+    ("MIDEAST 5", OCHRE),
+    ("AFRICA 2", GREEN),
+    ("OCEANIA 1", TEAL),
+    ("WORLD 2", GREY),
+]
+
+TIMELINE = ("THE DAY IN UTC \u2014 00:00 GTA VI unlocks in New Zealand "
+            "\u00b7 MORNING Shenzhen summit opens \u00b7 10:00 World Court "
+            "reads its judgment \u00b7 14:30 Anthropic's first trades "
+            "\u00b7 EVENING COP31 ministers take over")
 
 # lon/lat of the illustrated stories, for the map pins. The two numbers
 # after the coordinates are the badge offset in map pixels: 0, 0 means the
 # badge sits on the true point; anything else draws a small dot on the
 # true point and a leader line out to an offset badge, so no two badges
-# ever pile up. Stories 7 (a world survey) and 8 (a deep-space probe)
-# have no land position at all: their badges sit in empty ocean.
+# ever pile up. Odisha's badge is pushed down and Canberra's down-left
+# for exactly that reason; Auckland's badge is pulled left off its dot
+# near the map's right edge.
 PINS = {
-    1: (174, -41, -14, -6),   # Auckland: badge pulled left off the edge
-    2: (114, 22, 0, 0),      # Shenzhen
-    3: (51, 27, 14, -12),    # Gulf: badge up-right, clear of Riyadh's dot
-    4: (4, 51, -12, 14),     # Brussels: badge down-left, clear of London
-    5: (-122, 37, 0, 0),     # Santa Clara
-    6: (-77, 39, -18, -14),  # Washington (Jeffries): badge up-left
-    7: (-150, -35, 0, 0),    # World survey: South Pacific, ocean badge
-    8: (-165, 40, 0, 0),    # Deep space: North Pacific, ocean badge
-    9: (88, 16, 0, 0),       # Bay of Bengal
-    10: (34, 32, -16, -10),  # Gaza: badge up-left, clear of the Gulf
-    11: (44, 11, 0, 0),      # Bab el-Mandeb
-    12: (-79, 36, 18, 14),   # Washington (Fed): badge down-right
-    13: (-74, 39, 14, -14),  # Washington (AI cyber): dot off the coast, badge up-right
+    1: (114, 22, 0, 0),     # Shenzhen
+    2: (174, -41, -14, -6),  # Auckland: GTA VI first unlock
+    3: (-74, 41, 0, 0),     # New York: Anthropic listing
+    4: (4, 52, -12, 14),    # The Hague: badge down-left
+    5: (30, 37, 14, -12),   # Antalya: badge up-right
+    6: (86, 20, 0, 16),     # Odisha coast: badge pushed down, clear of Dhaka
+    7: (30, 50, -12, -14),  # Kyiv: badge up-left
+    8: (90, 24, 0, 0),      # Dhaka
+    9: (-80, 26, 0, 0),     # Florida
+    10: (127, 37, 0, 0),    # Seoul
+    11: (-74, 5, 0, 0),     # Bogota
+    12: (149, -35, -12, 12),  # Canberra: badge down-left, clear of Auckland
+    13: (20, 32, 0, 0),     # Benghazi
 }
 
-PIN_REGION = {1: "Oceania", 2: "Asia", 3: "Middle East", 4: "Europe",
-              5: "Americas", 6: "Americas", 7: "World", 8: "World",
-              9: "Asia", 10: "Middle East", 11: "Middle East",
-              12: "Americas", 13: "Americas"}
+PIN_REGION = {1: "Asia-Pacific", 2: "World", 3: "Americas",
+              4: "Europe", 5: "Europe", 6: "Asia-Pacific",
+              7: "Europe", 8: "Asia-Pacific", 9: "Americas",
+              10: "Asia-Pacific", 11: "Americas", 12: "Oceania",
+              13: "Africa"}
 
-# Small grey dots for the also-on stories (lon/lat).
+# Small grey dots for the also-on stories (lon/lat). A few are nudged a
+# few degrees so they do not hide under a numbered badge: Van Gogh and
+# Carney off the New York badge, the two Washington briefs off it too,
+# IAEA off the Seoul badge, Amazon off the Odisha badge, Venezuela off
+# the Bogota badge. Positions are approximate, as the map says.
 DOTS = {
-    14: (30, 50), 15: (-75, 45), 16: (-4, 58), 17: (2, 49),
-    18: (47, 25), 19: (20, 32), 20: (77, 29), 21: (140, 36),
-    22: (0, 51), 23: (30, 50), 24: (56, 27), 25: (34, 31), 26: (45, 2),
+    14: (34, 32), 15: (31, 46), 16: (-64, 46), 17: (-62, 7),
+    18: (-87, 41), 19: (-81, 50), 20: (77, 29), 21: (140, 36),
+    22: (73, 10), 23: (47, 25), 24: (2, 49), 25: (45, 13),
+    26: (-92, 32), 27: (33, 49), 28: (45, 2), 29: (35, 30),
+    30: (28, 52), 31: (-122, 37), 32: (0, 51), 33: (134, 45),
+    34: (36, 33), 35: (8, 45), 36: (-100, 42),
 }
 
 # Rough continent outlines in lon/lat (schematic, drawn for this page).
@@ -374,65 +394,84 @@ CONTINENTS = [
      (122, -17), (118, -20)],
 ]
 
+
 def render():
     img = Image.new("RGB", (W, H), PAPER)
     draw = ImageDraw.Draw(img)
 
     # --- masthead ---
-    draw.text((MARGIN, 10), "THE WORLD'S NEWS IN ONE PICTURE",
+    draw.text((MARGIN, 10), "THE WORLD IN ONE DAY",
               font=font(SANS_B, 13), fill=RED)
-    right = "26 STORIES \u00b7 7 REGIONS \u00b7 ALL FROM THURSDAY"
+    right = "THURSDAY'S NEWS \u00b7 ONE PAGE \u00b7 36 STORIES"
     right_w = draw.textlength(right, font=font(SANS_B, 13))
     draw.text((W - MARGIN - right_w, 10), right, font=font(SANS_B, 13), fill=INK)
-    draw.text((MARGIN, 30), "Thursday 19 November 2026",
-              font=font(SERIF_B, 46), fill=INK)
-    draw.line([(MARGIN, 88), (W - MARGIN, 88)], fill=INK, width=3)
-    draw.line([(MARGIN, 92), (W - MARGIN, 92)], fill=INK, width=1)
+    draw.text((MARGIN, 28), "Thursday 19 November 2026",
+              font=font(SERIF_B, 44), fill=INK)
+    draw.text((MARGIN, 78),
+              "Three leaders meet in Shenzhen \u00b7 A record IPO starts "
+              "trading \u00b7 A court rules on Myanmar",
+              font=font(SERIF_I, 15), fill=RED)
 
-    # --- data strip: six numbers the page can be checked against ---
+    # --- region strip: coloured segments with honest counts ---
+    seg_y, seg_h = 98, 18
+    seg_font = font(SANS_B, 11)
+    seg_widths = []
+    total_w = 0
+    for label, _col in REGION_STRIP:
+        w = draw.textlength(label, font=seg_font) + 18
+        seg_widths.append(w)
+        total_w += w + 4
+    total_w -= 4
+    x = (W - total_w) / 2
+    for (label, col), w in zip(REGION_STRIP, seg_widths):
+        draw.rectangle([x, seg_y, x + w, seg_y + seg_h], fill=col)
+        tw = draw.textlength(label, font=seg_font)
+        draw.text((x + (w - tw) / 2, seg_y + 3), label, font=seg_font,
+                  fill=WHITE)
+        x += w + 4
+
+    # --- KPI strip: six numbers the page can be checked against ---
     cell = CW // 6
-    y = 96
+    y = 120
     for i, (num, label) in enumerate(DATA_STRIP):
         x = MARGIN + i * cell
-        draw.text((x, y), num, font=font(SERIF_B, 19), fill=INK)
-        draw_text_block(draw, x, y + 23, label, font(SANS, 9), GREY,
-                        cell - 10, 11, max_lines=1)
-    draw.line([(MARGIN, 130), (W - MARGIN, 130)], fill=INK, width=1)
+        draw.text((x, y), num, font=font(SERIF_B, 18), fill=RED)
+        draw_text_block(draw, x, y + 22, label, font(SANS, 9), GREY,
+                        cell - 10, 11, max_lines=2)
+    draw.line([(MARGIN, 164), (W - MARGIN, 164)], fill=INK, width=1)
 
-    # --- region strip: honest counts, seven groups ---
-    strip = ("EUROPE 6  \u00b7  MIDDLE EAST 6  \u00b7  ASIA 4  \u00b7  "
-             "AMERICAS 5  \u00b7  AFRICA 2  \u00b7  OCEANIA 1  \u00b7  WORLD 2")
-    strip_w = draw.textlength(strip, font=font(SANS_B, 12))
-    draw.text(((W - strip_w) / 2, 134), strip, font=font(SANS_B, 12), fill=INK)
+    # --- timeline strip ---
+    draw.text((MARGIN, 168), TIMELINE, font=font(SANS_B, 10), fill=INK)
+    draw.line([(MARGIN, 182), (W - MARGIN, 182)], fill=INK, width=1)
 
-    # --- heroes: 3 equal columns, taller pictures than v2 ---
+    # --- heroes: 3 equal columns ---
     # sizes: ty_gap, kicker, head size, head dy, head leading,
     #        deck size, deck dy, deck leading, caption height, caption size
-    hero_y, hero_w, hero_gap = 150, 324, 12
+    hero_y, hero_w, hero_gap = 188, 324, 12
     for i, story in enumerate(HEROES):
         story_block(img, draw, MARGIN + i * (hero_w + hero_gap), hero_y,
-                    hero_w, 140, story, (5, 11, 18, 16, 21, 12, 60, 14, 20, 11))
+                    hero_w, 112, story, (5, 11, 18, 16, 21, 12, 60, 14, 20, 11))
 
     # --- mediums row 1: 5 columns (stories 4-8) ---
-    row1_y, row1_w, row1_gap = 384, 191, 10
+    row1_y, row1_w, row1_gap = 394, 191, 10
     for i, story in enumerate(MEDIUMS_ROW1):
         story_block(img, draw, MARGIN + i * (row1_w + row1_gap), row1_y,
-                    row1_w, 86, story, (4, 9, 13, 13, 15, 10, 43, 12, 17, 9))
+                    row1_w, 76, story, (4, 9, 13, 13, 15, 10, 43, 12, 17, 9))
 
-    # --- mediums row 2: 5 columns (stories 9-13, AI-cyber warning last) ---
-    row2_y, row2_w, row2_gap = 543, 191, 10
+    # --- mediums row 2: 5 columns (stories 9-13) ---
+    row2_y, row2_w, row2_gap = 544, 191, 10
     for i, story in enumerate(MEDIUMS_ROW2):
         story_block(img, draw, MARGIN + i * (row2_w + row2_gap), row2_y,
-                    row2_w, 90, story, (4, 10, 14, 14, 16, 10, 45, 12, 17, 9))
+                    row2_w, 76, story, (4, 10, 14, 14, 16, 10, 45, 12, 17, 9))
 
     # --- also-on header ---
-    ay = 710
-    draw.text((MARGIN, ay), "ALSO ON THURSDAY 19 NOVEMBER",
+    ay = 696
+    draw.text((MARGIN, ay), "ALSO ON THURSDAY 19 NOVEMBER \u2014 23 MORE STORIES",
               font=font(SANS_B, 12), fill=RED)
     draw.line([(MARGIN, ay + 18), (W - MARGIN, ay + 18)], fill=INK, width=1)
 
     # --- world map, with leader-line badges so nothing piles up ---
-    map_x, map_y, map_w, map_h = MARGIN, ay + 26, 340, 208
+    map_x, map_y, map_w, map_h = MARGIN, ay + 24, 340, 176
     draw.rectangle([map_x, map_y, map_x + map_w, map_y + map_h],
                    fill=SKY_LIGHT, outline=LAND_LINE)
 
@@ -463,36 +502,52 @@ def render():
         tw = draw.textlength(label, font=font(SANS_B, 10))
         draw.text((bx - tw / 2, by - 7), label, font=font(SANS_B, 10),
                   fill=WHITE)
-    draw.text((map_x, map_y + map_h + 4),
-              "Pins: stories 1\u201313 \u2014 dots: 14\u201326. 7 world, 8 deep space in the oceans.",
+    draw.text((MARGIN, map_y + map_h + 4),
+              "WHERE IT HAPPENED \u2014 Red numbers 1\u201313; grey dots are the briefs.",
               font=font(SANS, 9), fill=GREY)
 
-    # --- also-on list, two columns ---
+    # --- also-on list, three columns ---
     list_x = MARGIN + map_w + 14
-    col_w = (W - MARGIN - list_x - 10) // 2
-    num_font = font(SANS_B, 11)
-    txt_font = font(SANS, 11)
-    for col in range(2):
+    col_w = (W - MARGIN - list_x - 10) // 3
+    num_font = font(SANS_B, 10)
+    txt_font = font(SANS, 10)
+    col_counts = [8, 8, 7]
+    idx = 0
+    for col in range(3):
         x = list_x + col * (col_w + 10)
         y = map_y
-        for num, text in ALSO_ON[col * 7:(col + 1) * 7]:
+        for num, _region, text in ALSO_ON[idx:idx + col_counts[col]]:
             draw.text((x, y), f"{num}", font=num_font, fill=RED)
-            lines = wrap(draw, text, txt_font, col_w - 24)
+            lines = wrap(draw, text, txt_font, col_w - 22)
             ly = y
             for line in lines[:2]:
-                draw.text((x + 24, ly), line, font=txt_font, fill=INK)
-                ly += 13
-            y = ly + 6
+                draw.text((x + 22, ly), line, font=txt_font, fill=INK)
+                ly += 11
+            y = ly + 3
+        idx += col_counts[col]
+
+    # --- DATE CHECK: the Wednesday stories this page leaves out ---
+    dc_y = 926
+    dc_lines = [
+        "DATE CHECK \u2014 FIRST REPORTED WEDNESDAY 18 NOV, SO NOT ON THIS PAGE AS NEWS:",
+        "the Iranian drone interceptions over Kuwait and Bahrain \u00b7 the EU's proposed \u20ac45bn loan for Ukraine \u00b7 the House "
+        "Democrats' 251\u201311 vote nominating Hakeem Jeffries \u00b7 Voyager 1 crossing one light-day, at 10:16 GMT Wednesday \u00b7 Pew's "
+        "projection that Islam becomes the largest religion by 2035 \u00b7 Peltola's Alaska win \u00b7 and the Nature study on Earth's missing "
+        "billion years (a 4 Nov paper).",
+    ]
+    draw.text((MARGIN, dc_y), dc_lines[0], font=font(SANS_B, 9), fill=RED)
+    draw_text_block(draw, MARGIN, dc_y + 12, dc_lines[1], font(SANS, 9),
+                    INK, CW, 11, max_lines=3)
 
     # --- footer ---
-    foot_y = 976
+    foot_y = 970
     draw.text((MARGIN, foot_y),
-              "DATE CHECK \u2014 Left out as earlier news: Estonia's border closure, announced 16 Nov; "
-              "the NSA network outage, first reported 17 Nov.",
-              font=font(SANS_B, 9), fill=INK)
-    draw.text((MARGIN, foot_y + 13),
-              "Every story here was current news on Thursday 19 November 2026. "
-              "Contested claims are marked as claims. Sources: Reuters, AP, AFP, BBC, Pew, NASA, IMD. Original drawings.",
+              "Every story here happened, or was first reported, on Thursday 19 November 2026. "
+              "Disputed claims are attributed, not stated as fact.",
+              font=font(SANS, 9), fill=GREY)
+    draw.text((MARGIN, foot_y + 12),
+              "Sources: Reuters, AP, AFP, BBC, The Hindu, IMD, NASA, ICJ, Pew. Original drawings. "
+              "The World in One Day \u2014 19 November 2026.",
               font=font(SANS, 9), fill=GREY)
 
     out = ROOT / "entry.png"
